@@ -1,0 +1,43 @@
+.block {
+	composes: pt-25 ml-5 from global;
+	display: flex;
+	flex-direction: column;
+}
+
+.burgerConstructor {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 10px;
+	height: 644px;
+	composes: ml-8 from global;
+}
+
+.overflowWrap {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	height: 440px;
+	overflow-y: scroll;
+	scrollbar-color: var(--scrollbar-color);
+}
+
+.orderWrap {
+	display: flex;
+	align-items: center;
+	margin-left: auto;
+	composes: mt-10 from global;
+}
+
+.totalPrice {
+	composes: text text_type_digits-medium from global;
+	composes: mr-10 from global;
+}
+
+.noneIngredientsWrap {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+}

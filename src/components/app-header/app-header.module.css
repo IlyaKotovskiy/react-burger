@@ -1,0 +1,37 @@
+.header {
+	background-color: var(--interface-modal-bg);
+}
+
+.nav {
+	composes: pt-4 pb-4 from global;
+	display: flex;
+	align-items: center;
+}
+
+.navItem {
+	display: flex;
+	cursor: pointer;
+	composes: p-5 from global;
+}
+
+.navItem:last-child {
+	margin-left: auto;
+}
+
+.list {
+	display: flex;
+	align-items: center;
+}
+
+.logo {
+	margin-left: 112px;
+	cursor: pointer;
+}
+
+.textActive {
+	composes: text text_type_main-default from global;
+}
+
+.textInactive {
+	composes: text text_type_main-default text_color_inactive from global;
+}

@@ -1,36 +1,48 @@
-import { clsx } from 'clsx';
-import { useState } from 'react';
 import s from './app.module.scss';
-import reactLogo from './assets/react.svg';
-import { ReactComponent as TypescriptLogo } from './assets/typescript.svg';
-import { add } from '@utils/one';
-import { AppHeader } from '@components/app-header/app-header';
+import { AppHeader } from '@components/app-header';
+import { BurgerConstructor } from '@components/burger-constructor';
+import { BurgerIngredients } from '@components/burger-ingredients';
+import { useState } from 'react';
+import { IIngredientData } from '../types/data.t';
 
 export const App = () => {
-	// const num = 0
-	const [count, setCount] = useState(0);
+	const [bun, setBun] = useState<IIngredientData | null>(null);
+	const [ingredients, setIngredients] = useState<IIngredientData[]>([]);
+	const [totalPrice, setTotalPrice] = useState<number>(0);
+
+	const handleIngredientClick = (ingredient: IIngredientData): void => {
+		if (ingredient.type === 'bun') {
+			setBun(ingredient);
+			setTotalPrice((prevPrice) => prevPrice + ingredient.price);
+		} else {
+			setIngredients([...ingredients, ingredient]);
+			setTotalPrice((prevPrice) => prevPrice + ingredient.price);
+		}
+	};
+
+	const moveIngredient = (fromIndex: number, toIndex: number): void => {
+		const newIngredients = [...ingredients];
+		const [removed] = newIngredients.splice(fromIndex, 1);
+		newIngredients.splice(toIndex, 0, removed);
+		setIngredients(newIngredients);
+	};
 
 	return (
-		<div className='page'>
+		<>
 			<AppHeader />
-			<div className='logo-wrapper'>
-				<a href='https://reactjs.org' target='_blank' rel='noreferrer'>
-					<img
-						src={reactLogo}
-						className={clsx(s.logo, s.react)}
-						alt={`React logo ${add(2, 5)}`}
-					/>
-				</a>
-				<a href='https://vitejs.dev' target='_blank' rel='noreferrer'>
-					<TypescriptLogo className={s.logo} />
-				</a>
-			</div>
-			<h1>React + TS</h1>
-			<div className={s.card}>
-				<button onClick={() => setCount((count) => count + 1)}>
-					count is {count}
-				</button>
-			</div>
-		</div>
+			<section>
+				<div className='container'>
+					<div className={s.wrap}>
+						<BurgerIngredients onIngredientClick={handleIngredientClick} />
+						<BurgerConstructor
+							bun={bun}
+							ingredients={ingredients}
+							totalPrice={totalPrice}
+							moveIngredient={moveIngredient}
+						/>
+					</div>
+				</div>
+			</section>
+		</>
 	);
 };
