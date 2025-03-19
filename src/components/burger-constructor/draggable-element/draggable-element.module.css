@@ -6,7 +6,7 @@
 }
 
 .dragging {
-	composes: dragitem;
+	composes: dragItem;
 	opacity: 0.5 !important;
 }
 
