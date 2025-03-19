@@ -1,4 +1,4 @@
-.dragItem {
+.dragitem {
 	position: relative;
 	display: flex;
 	align-items: center;
@@ -6,7 +6,7 @@
 }
 
 .dragging {
-	composes: dragItem;
+	composes: dragitem;
 	opacity: 0.5 !important;
 }
 

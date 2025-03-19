@@ -37,7 +37,7 @@ export const DraggableElement: React.FC<IDraggableElementProps> = ({
 	return (
 		<motion.div
 			style={{ pointerEvents: 'auto' }}
-			className={isDragging ? s.dragging : s.dragItem}
+			className={isDragging ? s.dragging : s.dragitem}
 			draggable
 			onDragStart={(e) =>
 				handleDragStart(e as unknown as React.DragEvent<HTMLDivElement>, index)
