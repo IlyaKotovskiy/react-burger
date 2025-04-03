@@ -9,13 +9,13 @@ import {
 
 export const BurgerConstructor: React.FC<IBurgerConstructorProps> = ({
 	bun,
-	ingredients,
+	constructorIngredients,
 	totalPrice,
 	moveIngredient,
 }): React.JSX.Element => {
 	return (
 		<div className={s.block}>
-			{ingredients.length || bun ? (
+			{constructorIngredients.length || bun ? (
 				<>
 					<div className={s.burgerConstructor}>
 						{bun && (
@@ -28,7 +28,7 @@ export const BurgerConstructor: React.FC<IBurgerConstructorProps> = ({
 							/>
 						)}
 						<div className={s.overflowWrap}>
-							{ingredients.map((ingredient, index) => (
+							{constructorIngredients.map((ingredient, index) => (
 								<DraggableElement
 									key={ingredient._id}
 									ingredient={ingredient}

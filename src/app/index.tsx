@@ -2,12 +2,17 @@ import s from './app.module.scss';
 import { AppHeader } from '@components/app-header';
 import { BurgerConstructor } from '@components/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IIngredientData } from '../types/data.t';
+
+export const BASE_URL = 'https://norma.nomoreparties.space/api/ingredients';
 
 export const App = () => {
 	const [bun, setBun] = useState<IIngredientData | null>(null);
 	const [ingredients, setIngredients] = useState<IIngredientData[]>([]);
+	const [constructorIngredients, setConstructorIngredients] = useState<
+		IIngredientData[]
+	>([]);
 	const [totalPrice, setTotalPrice] = useState<number>(0);
 
 	const handleIngredientClick = (ingredient: IIngredientData): void => {
@@ -15,17 +20,23 @@ export const App = () => {
 			setBun(ingredient);
 			setTotalPrice((prevPrice) => prevPrice + ingredient.price);
 		} else {
-			setIngredients([...ingredients, ingredient]);
+			setConstructorIngredients([...constructorIngredients, ingredient]);
 			setTotalPrice((prevPrice) => prevPrice + ingredient.price);
 		}
 	};
 
 	const moveIngredient = (fromIndex: number, toIndex: number): void => {
-		const newIngredients = [...ingredients];
+		const newIngredients = [...constructorIngredients];
 		const [removed] = newIngredients.splice(fromIndex, 1);
 		newIngredients.splice(toIndex, 0, removed);
-		setIngredients(newIngredients);
+		setConstructorIngredients(newIngredients);
 	};
+
+	useEffect(() => {
+		fetch(BASE_URL)
+			.then((res) => res.json())
+			.then((data) => setIngredients([...data.data]));
+	}, []);
 
 	return (
 		<>
@@ -33,10 +44,13 @@ export const App = () => {
 			<section>
 				<div className='container'>
 					<div className={s.wrap}>
-						<BurgerIngredients onIngredientClick={handleIngredientClick} />
+						<BurgerIngredients
+							ingredients={ingredients}
+							onIngredientClick={handleIngredientClick}
+						/>
 						<BurgerConstructor
 							bun={bun}
-							ingredients={ingredients}
+							constructorIngredients={constructorIngredients}
 							totalPrice={totalPrice}
 							moveIngredient={moveIngredient}
 						/>

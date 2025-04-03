@@ -7,19 +7,33 @@ import {
 	EIngredientTypes,
 	IBurgerIngredientsProps,
 } from '../../types/burger-ingredients.t';
+import { Modal } from '@components/modal';
+import { IIngredientData } from '../../types/data.t';
+import { useModal } from '../../hooks/useModal';
+import { data } from '@utils/data';
 
 export const BurgerIngredients: React.FC<IBurgerIngredientsProps> = ({
-	onIngredientClick,
+	ingredients,
+	// onIngredientClick,
 }): React.JSX.Element => {
 	const [currentTab, setCurrentTab] = useState<string>(EIngredientTypes.BUNS);
+	const [currentIngredient, setCurrentIngredient] = useState<IIngredientData>(
+		data[0]
+	);
+	const { isOpen, openModal, closeModal } = useModal();
 
-	const buns = filteredIngredientsByType('bun');
-	const sauces = filteredIngredientsByType('sauce');
-	const main = filteredIngredientsByType('main');
+	const buns = filteredIngredientsByType(ingredients)('bun');
+	const sauces = filteredIngredientsByType(ingredients)('sauce');
+	const main = filteredIngredientsByType(ingredients)('main');
 
 	const handleTabClick = (type: EIngredientTypes): void => {
 		setCurrentTab(type);
 		document.getElementById(type)?.scrollIntoView({ behavior: 'smooth' });
+	};
+
+	const handleClick = (ingredient: IIngredientData) => {
+		setCurrentIngredient(ingredient);
+		openModal();
 	};
 
 	return (
@@ -52,7 +66,7 @@ export const BurgerIngredients: React.FC<IBurgerIngredientsProps> = ({
 						{buns.map((elem) => (
 							<IngredientCard
 								key={elem._id}
-								onClick={() => onIngredientClick(elem)}
+								onClick={() => handleClick(elem)}
 								{...elem}
 							/>
 						))}
@@ -64,7 +78,7 @@ export const BurgerIngredients: React.FC<IBurgerIngredientsProps> = ({
 						{sauces.map((elem) => (
 							<IngredientCard
 								key={elem._id}
-								onClick={() => onIngredientClick(elem)}
+								onClick={() => handleClick(elem)}
 								{...elem}
 							/>
 						))}
@@ -76,13 +90,14 @@ export const BurgerIngredients: React.FC<IBurgerIngredientsProps> = ({
 						{main.map((elem) => (
 							<IngredientCard
 								key={elem._id}
-								onClick={() => onIngredientClick(elem)}
+								onClick={() => handleClick(elem)}
 								{...elem}
 							/>
 						))}
 					</div>
 				</li>
 			</ul>
+			{isOpen && <Modal ingredient={currentIngredient} onClose={closeModal} />}
 		</div>
 	);
 };

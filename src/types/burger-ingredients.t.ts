@@ -7,6 +7,7 @@ export enum EIngredientTypes {
 }
 
 export interface IBurgerIngredientsProps {
+	ingredients: IIngredientData[];
 	onIngredientClick: (ingredient: IIngredientData) => void;
 }
 

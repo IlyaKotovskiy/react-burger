@@ -2,7 +2,7 @@ import { IIngredientData } from './data.t';
 
 export interface IBurgerConstructorProps {
 	bun: IIngredientData | null;
-	ingredients: IIngredientData[];
+	constructorIngredients: IIngredientData[];
 	totalPrice: number;
 	moveIngredient: (fromIndex: number, toIndex: number) => void;
 }

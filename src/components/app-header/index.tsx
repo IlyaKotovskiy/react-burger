@@ -1,3 +1,5 @@
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import s from './app-header.module.css';
 import {
 	Logo,
@@ -12,19 +14,25 @@ export const AppHeader: React.FC = (): React.JSX.Element => {
 			<div className='container'>
 				<nav className={s.nav}>
 					<ul className={s.list}>
-						<li className={s.navItem}>
-							<BurgerIcon type='primary' className='mr-2' />
-							<p className={s.textActive}>Конструктор</p>
+						<li>
+							<a href='#' className={s.navItem}>
+								<BurgerIcon type='primary' className='mr-2' />
+								<p className={s.textActive}>Конструктор</p>
+							</a>
 						</li>
 						<li className={s.navItem}>
-							<ListIcon type='secondary' className='mr-2' />
-							<p className={s.textInactive}>Лента заказов</p>
+							<a href='#' className={s.navItem}>
+								<ListIcon type='secondary' className='mr-2' />
+								<p className={s.textInactive}>Лента заказов</p>
+							</a>
 						</li>
 					</ul>
 					<Logo className={s.logo} />
 					<div className={s.navItem}>
-						<ProfileIcon type='secondary' className='mr-2' />
-						<p className={s.textInactive}>Личный кабинет</p>
+						<a href='#' className={s.navItem}>
+							<ProfileIcon type='secondary' className='mr-2' />
+							<p className={s.textInactive}>Личный кабинет</p>
+						</a>
 					</div>
 				</nav>
 			</div>
