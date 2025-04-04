@@ -1,5 +1,3 @@
-import { IIngredientData } from './data.t';
-
 export interface IUseModal {
 	isOpen: boolean;
 	openModal: () => void;
@@ -7,6 +5,7 @@ export interface IUseModal {
 }
 
 export interface IModalProps {
+	title?: string;
+	children: React.ReactNode;
 	onClose: () => void;
-	ingredient: IIngredientData;
 }

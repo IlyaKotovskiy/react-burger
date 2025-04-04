@@ -4,8 +4,9 @@ import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 
 export const Modal: React.FC<IModalProps> = ({
+	title,
+	children,
 	onClose,
-	ingredient,
 }): React.JSX.Element | null => {
 	const modalRoot = document.body;
 
@@ -29,37 +30,12 @@ export const Modal: React.FC<IModalProps> = ({
 					exit={{ opacity: 0, translateY: 35, scale: 0.9 }}
 					transition={{ duration: 0.2, ease: 'easeInOut' }}
 					onClick={(e) => e.stopPropagation()}>
-					<h2 className={s.title}>Детали ингредиента</h2>
+					{title && <h2 className={s.title}>{title}</h2>}
 					<button type='button' className={s.closeBtn} onClick={onClose}>
 						<span></span>
 						<span></span>
 					</button>
-					<div className={s.wrapper}>
-						<img
-							src={ingredient.image}
-							alt={ingredient.name}
-							className={s.image}
-						/>
-						<h3 className='text text_type_main-medium'>{ingredient.name}</h3>
-						<ul className={s.ingredientInfo}>
-							<li className='text text_type_main-default text_color_inactive'>
-								<p>Калории,ккал</p>
-								<span className={s.digits}>{ingredient.calories}</span>
-							</li>
-							<li className='text text_type_main-default text_color_inactive'>
-								<p>Белки, г</p>
-								<span className={s.digits}>{ingredient.proteins}</span>
-							</li>
-							<li className='text text_type_main-default text_color_inactive'>
-								<p>Жиры, г</p>
-								<span className={s.digits}>{ingredient.fat}</span>
-							</li>
-							<li className='text text_type_main-default text_color_inactive'>
-								<p>Углеводы, г</p>
-								<span className={s.digits}>{ingredient.carbohydrates}</span>
-							</li>
-						</ul>
-					</div>
+					{children}
 				</motion.div>
 			</motion.div>
 		</AnimatePresence>,

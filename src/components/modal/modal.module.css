@@ -11,7 +11,7 @@
 .modal {
 	position: relative;
 	width: 720px;
-	height: 538px;
+	min-height: 538px;
 	padding: 40px 40px 60px;
 	text-align: center;
 	background-color: var(--interface-modal-bg);
@@ -44,23 +44,4 @@
 .title {
 	text-align: left;
 	composes: text text_type_main-large from global;
-}
-
-.image {
-	width: 100%;
-	max-width: 520px;
-	margin-bottom: 16px;
-}
-
-.ingredientInfo {
-	display: flex;
-	justify-content: center;
-	gap: 20px;
-	margin-top: 32px;
-}
-
-.digits {
-	display: inline-block;
-	margin-top: 8px;
-	composes: text text_type_digits-default from global;
 }

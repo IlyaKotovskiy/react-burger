@@ -1,5 +1,5 @@
 import s from './burger-ingredients.module.css';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { filteredIngredientsByType } from '@utils/filteredIngredients';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IngredientCard } from './ingredient-card';
@@ -10,28 +10,34 @@ import {
 import { Modal } from '@components/modal';
 import { IIngredientData } from '../../types/data.t';
 import { useModal } from '../../hooks/useModal';
-import { data } from '@utils/data';
 
 export const BurgerIngredients: React.FC<IBurgerIngredientsProps> = ({
 	ingredients,
-	// onIngredientClick,
 }): React.JSX.Element => {
 	const [currentTab, setCurrentTab] = useState<string>(EIngredientTypes.BUNS);
-	const [currentIngredient, setCurrentIngredient] = useState<IIngredientData>(
-		data[0]
-	);
+	const [currentIngredient, setCurrentIngredient] =
+		useState<IIngredientData | null>(null);
 	const { isOpen, openModal, closeModal } = useModal();
 
-	const buns = filteredIngredientsByType(ingredients)('bun');
-	const sauces = filteredIngredientsByType(ingredients)('sauce');
-	const main = filteredIngredientsByType(ingredients)('main');
+	const buns = useMemo(
+		() => filteredIngredientsByType(ingredients)('bun'),
+		[ingredients]
+	);
+	const sauces = useMemo(
+		() => filteredIngredientsByType(ingredients)('sauce'),
+		[ingredients]
+	);
+	const main = useMemo(
+		() => filteredIngredientsByType(ingredients)('main'),
+		[ingredients]
+	);
 
 	const handleTabClick = (type: EIngredientTypes): void => {
 		setCurrentTab(type);
 		document.getElementById(type)?.scrollIntoView({ behavior: 'smooth' });
 	};
 
-	const handleClick = (ingredient: IIngredientData) => {
+	const handleIngredientClick = (ingredient: IIngredientData) => {
 		setCurrentIngredient(ingredient);
 		openModal();
 	};
@@ -66,7 +72,7 @@ export const BurgerIngredients: React.FC<IBurgerIngredientsProps> = ({
 						{buns.map((elem) => (
 							<IngredientCard
 								key={elem._id}
-								onClick={() => handleClick(elem)}
+								onClick={() => handleIngredientClick(elem)}
 								{...elem}
 							/>
 						))}
@@ -78,7 +84,7 @@ export const BurgerIngredients: React.FC<IBurgerIngredientsProps> = ({
 						{sauces.map((elem) => (
 							<IngredientCard
 								key={elem._id}
-								onClick={() => handleClick(elem)}
+								onClick={() => handleIngredientClick(elem)}
 								{...elem}
 							/>
 						))}
@@ -90,14 +96,49 @@ export const BurgerIngredients: React.FC<IBurgerIngredientsProps> = ({
 						{main.map((elem) => (
 							<IngredientCard
 								key={elem._id}
-								onClick={() => handleClick(elem)}
+								onClick={() => handleIngredientClick(elem)}
 								{...elem}
 							/>
 						))}
 					</div>
 				</li>
 			</ul>
-			{isOpen && <Modal ingredient={currentIngredient} onClose={closeModal} />}
+			{isOpen && currentIngredient && (
+				<Modal title={'Детали ингредиента'} onClose={closeModal}>
+					<div>
+						<img
+							src={currentIngredient.image}
+							alt={currentIngredient.name}
+							className={s.modalImage}
+						/>
+						<h3 className={s.modalIngredientTitle}>{currentIngredient.name}</h3>
+						<ul className={s.modalIngredientListInfo}>
+							<li className={s.modalIngredientListItem}>
+								<p>Калории,ккал</p>
+								<span className={s.modalDigits}>
+									{currentIngredient.calories}
+								</span>
+							</li>
+							<li className={s.modalIngredientListItem}>
+								<p>Белки, г</p>
+								<span className={s.modalDigits}>
+									{currentIngredient.proteins}
+								</span>
+							</li>
+							<li className={s.modalIngredientListItem}>
+								<p>Жиры, г</p>
+								<span className={s.modalDigits}>{currentIngredient.fat}</span>
+							</li>
+							<li className={s.modalIngredientListItem}>
+								<p>Углеводы, г</p>
+								<span className={s.modalDigits}>
+									{currentIngredient.carbohydrates}
+								</span>
+							</li>
+						</ul>
+					</div>
+				</Modal>
+			)}
 		</div>
 	);
 };
