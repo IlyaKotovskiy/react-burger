@@ -16,7 +16,8 @@
 			true,
 			{
 				"ignoreProperties": [
-					"print-color-adjust"
+					"print-color-adjust",
+					"composes"
 				]
 			}
 		],

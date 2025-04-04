@@ -1,0 +1,63 @@
+.block {
+	composes: pt-25 ml-5 from global;
+	display: flex;
+	flex-direction: column;
+}
+
+.burgerConstructor {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 10px;
+	height: 644px;
+	composes: ml-8 from global;
+}
+
+.overflowWrap {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	height: 440px;
+	overflow-y: scroll;
+	scrollbar-color: var(--scrollbar-color);
+}
+
+.orderWrap {
+	display: flex;
+	align-items: center;
+	margin-left: auto;
+	composes: mt-10 from global;
+}
+
+.totalPrice {
+	composes: text text_type_digits-medium from global;
+	composes: mr-10 from global;
+}
+
+.dragitem {
+	position: relative;
+	display: flex;
+	align-items: center;
+	cursor: grab;
+}
+
+.dragIcon {
+	composes: mr-2 from global;
+}
+
+.modalWrapper {
+	composes: pt-30 pb-30 from global;
+}
+
+.modalIdTitle {
+	composes: text text_type_digits-large from global;
+	composes: mb-8 from global;
+}
+
+.modalIdText {
+	composes: text text_type_main-medium from global;
+}
+
+.modalImage {
+	composes: mt-15 mb-15 from global;
+}
