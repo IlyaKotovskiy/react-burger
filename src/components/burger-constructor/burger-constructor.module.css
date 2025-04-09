@@ -34,13 +34,6 @@
 	composes: mr-10 from global;
 }
 
-.dragitem {
-	position: relative;
-	display: flex;
-	align-items: center;
-	cursor: grab;
-}
-
 .dragIcon {
 	composes: mr-2 from global;
 }
