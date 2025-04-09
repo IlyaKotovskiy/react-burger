@@ -7,5 +7,6 @@ export enum EIngredientTypes {
 }
 
 export interface IIngredientCardProp extends IIngredientData {
+	count: number;
 	onClick: () => void;
 }

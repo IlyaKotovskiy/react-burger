@@ -1,7 +1,9 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+	GET_TOTAL_CONSTRUCTOR_SUM,
 	MOVE_INGREDIENT,
+	REMOVE_INGREDIENT,
 	SET_BUN,
 	SET_CONSTRUCTOR_ITEMS,
 	SET_CURRENT_INGREDIENT,
@@ -17,6 +19,7 @@ const initState: IIngredientState = {
 	constructor: {
 		items: [],
 		bun: null,
+		totalSum: 0,
 	},
 
 	currentItem: null,
@@ -49,6 +52,18 @@ export const ingredientsReducer = (
 
 			return { ...state, constructor: { ...state.constructor, items } };
 		}
+		case REMOVE_INGREDIENT: {
+			const uniqueId = action.payload;
+			return {
+				...state,
+				constructor: {
+					...state.constructor,
+					items: state.constructor.items.filter(
+						(item) => item.uniqueId !== uniqueId
+					),
+				},
+			};
+		}
 		case SET_CONSTRUCTOR_ITEMS: {
 			return {
 				...state,
@@ -57,6 +72,18 @@ export const ingredientsReducer = (
 					items: [...state.constructor.items, action.payload],
 				},
 			};
+		}
+		case GET_TOTAL_CONSTRUCTOR_SUM: {
+			const ingredients = [...state.constructor.items];
+			const bun = { ...state.constructor.bun };
+
+			const ingredientsSum = ingredients.reduce(
+				(sum, item) => sum + item.price,
+				0
+			);
+			const bunsSum = bun && bun.price ? bun.price * 2 : 0;
+			const totalSum = ingredientsSum + bunsSum;
+			return { ...state, constructor: { ...state.constructor, totalSum } };
 		}
 		case SET_CURRENT_INGREDIENT: {
 			return { ...state, currentItem: action.payload };

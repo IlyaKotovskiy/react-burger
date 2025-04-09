@@ -9,14 +9,15 @@ import { IConstructorIngredient } from '../../../types/store/ingredients.t';
 interface IDraggableConstructorIngredientProps {
 	index: number;
 	item: IConstructorIngredient;
-	onRemove: () => void;
+	uniqueId: string;
+	onRemove: (uniqueId: string) => void;
 	moveItem: (fromIndex: number, toIndex: number) => void;
 }
 
 export const DraggableConstructorIngredient: React.FC<
 	IDraggableConstructorIngredientProps
 > = (props): React.JSX.Element => {
-	const { index, item, onRemove, moveItem } = props;
+	const { index, item, uniqueId, onRemove, moveItem } = props;
 
 	const [, drag] = useDrag({
 		type: 'constructorItem',
@@ -40,7 +41,7 @@ export const DraggableConstructorIngredient: React.FC<
 				text={item.name}
 				price={item.price}
 				thumbnail={item.image}
-				handleClose={onRemove}
+				handleClose={() => onRemove(uniqueId)}
 			/>
 		</div>
 	);

@@ -5,7 +5,9 @@ import { IIngredientData } from '../../types/data.t';
 
 export const SET_INGREDIENTS = 'SET_INGREDIENTS';
 export const MOVE_INGREDIENT = 'MOVE_INGREDIENT';
+export const REMOVE_INGREDIENT = 'REMOVE_INGREDIENT';
 export const SET_CONSTRUCTOR_ITEMS = 'SET_CONSTRUCTOR_ITEMS';
+export const GET_TOTAL_CONSTRUCTOR_SUM = 'GET_TOTAL_CONSTRUCTOR_SUM';
 export const SET_CURRENT_INGREDIENT = 'SET_CURRENT_INGREDIENT';
 export const SET_CURRENT_TAB = 'SET_CURRENT_TAB';
 export const SET_BUN = 'SET_BUN';
@@ -23,11 +25,20 @@ export const moveIngredientAction = (fromIndex: number, toIndex: number) => ({
 	},
 });
 
+export const removeIngredientAction = (payload: string) => ({
+	type: REMOVE_INGREDIENT,
+	payload,
+});
+
 export const setConstructorItemsAction = (
 	payload: IConstructorIngredient[]
 ) => ({
 	type: SET_CONSTRUCTOR_ITEMS,
 	payload,
+});
+
+export const getTotalConstructorSumAction = () => ({
+	type: GET_TOTAL_CONSTRUCTOR_SUM,
 });
 
 export const setCurrentIngredientAction = (payload: IIngredientData) => ({

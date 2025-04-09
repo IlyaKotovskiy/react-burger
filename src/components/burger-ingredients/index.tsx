@@ -28,6 +28,13 @@ export const BurgerIngredients: React.FC = (): React.JSX.Element => {
 		(store: RootState) => store.ingredients.currentTab
 	);
 
+	const constructorIngredients = useSelector(
+		(store: RootState) => store.ingredients.constructor.items
+	);
+	const bun = useSelector(
+		(store: RootState) => store.ingredients.constructor.bun
+	);
+
 	const { isOpen, openModal, closeModal } = useModal();
 
 	const buns = useMemo(
@@ -42,6 +49,20 @@ export const BurgerIngredients: React.FC = (): React.JSX.Element => {
 		() => filteredIngredientsByType(ingredients)('main'),
 		[ingredients]
 	);
+
+	const countIngredients = useMemo(() => {
+		const counts: Record<string, number> = {};
+
+		if (bun) {
+			counts[bun._id] = 2;
+		}
+
+		constructorIngredients.forEach((item) => {
+			counts[item._id] = (counts[item._id] || 0) + 1;
+		});
+
+		return counts;
+	}, [constructorIngredients, bun]);
 
 	const handleTabClick = (type: EIngredientTypes): void => {
 		dispatch(setCurrentTabAction(type));
@@ -88,6 +109,7 @@ export const BurgerIngredients: React.FC = (): React.JSX.Element => {
 							<IngredientCard
 								key={elem._id}
 								onClick={() => handleIngredientClick(elem)}
+								count={countIngredients[elem._id || 0]}
 								{...elem}
 							/>
 						))}
@@ -100,6 +122,7 @@ export const BurgerIngredients: React.FC = (): React.JSX.Element => {
 							<IngredientCard
 								key={elem._id}
 								onClick={() => handleIngredientClick(elem)}
+								count={countIngredients[elem._id || 0]}
 								{...elem}
 							/>
 						))}
@@ -112,6 +135,7 @@ export const BurgerIngredients: React.FC = (): React.JSX.Element => {
 							<IngredientCard
 								key={elem._id}
 								onClick={() => handleIngredientClick(elem)}
+								count={countIngredients[elem._id || 0]}
 								{...elem}
 							/>
 						))}

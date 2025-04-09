@@ -10,6 +10,7 @@ export interface IIngredientState {
 	constructor: {
 		items: IConstructorIngredient[];
 		bun: IIngredientData | null;
+		totalSum: number;
 	};
 	currentItem: IIngredientData | null;
 	currentTab: EIngredientTypes;

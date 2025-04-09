@@ -7,14 +7,16 @@ import {
 import { useModal } from '../../hooks/useModal';
 import { Modal } from '@components/modal';
 import DoneIcon from '../../app/assets/done.png';
-import { SyntheticEvent, useMemo } from 'react';
+import { SyntheticEvent, useEffect } from 'react';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { createOrder } from '@services/actions/order';
 import { useSelector } from 'react-redux';
 import { RootState } from '../..';
 import { useDrop } from 'react-dnd';
 import {
+	getTotalConstructorSumAction,
 	moveIngredientAction,
+	removeIngredientAction,
 	setBunAction,
 	setConstructorItemsAction,
 } from '@services/actions/ingredients';
@@ -29,7 +31,7 @@ export const BurgerConstructor: React.FC = (): React.JSX.Element => {
 	const ingredients = useSelector(
 		(store: RootState) => store.ingredients.allItems
 	);
-	const { items, bun } = useSelector(
+	const { items, bun, totalSum } = useSelector(
 		(store: RootState) => store.ingredients.constructor
 	);
 
@@ -52,14 +54,8 @@ export const BurgerConstructor: React.FC = (): React.JSX.Element => {
 	});
 
 	const removeIngredient = (uniqueId: string) => {
-		items.filter((item) => item.uniqueId !== uniqueId);
+		dispatch(removeIngredientAction(uniqueId));
 	};
-
-	const calculateTotal = useMemo(() => {
-		const ingredientsSum = items.reduce((sum, item) => sum + item.price, 0);
-		const bunsSum = bun ? bun.price * 2 : 0;
-		return ingredientsSum + bunsSum;
-	}, [items, bun]);
 
 	const handleSubmitForm = (e: SyntheticEvent) => {
 		e.preventDefault();
@@ -72,6 +68,10 @@ export const BurgerConstructor: React.FC = (): React.JSX.Element => {
 	const moveItem = (fromIndex: number, toIndex: number) => {
 		dispatch(moveIngredientAction(fromIndex, toIndex));
 	};
+
+	useEffect(() => {
+		dispatch(getTotalConstructorSumAction());
+	}, [bun, items]);
 
 	return (
 		<div ref={drop} className={s.block}>
@@ -92,7 +92,8 @@ export const BurgerConstructor: React.FC = (): React.JSX.Element => {
 								key={item.uniqueId}
 								item={item}
 								index={index}
-								onRemove={() => removeIngredient(item.uniqueId)}
+								uniqueId={item.uniqueId}
+								onRemove={removeIngredient}
 								moveItem={moveItem}
 							/>
 						))}
@@ -109,7 +110,7 @@ export const BurgerConstructor: React.FC = (): React.JSX.Element => {
 				</div>
 				<div className={s.orderWrap}>
 					<span className={s.totalPrice}>
-						{calculateTotal} <CurrencyIcon type='primary' />
+						{totalSum} <CurrencyIcon type='primary' />
 					</span>
 					<Button
 						htmlType='button'
