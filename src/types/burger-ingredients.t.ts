@@ -6,13 +6,7 @@ export enum EIngredientTypes {
 	MAIN = 'main',
 }
 
-export interface IBurgerIngredientsProps {
-	ingredients: IIngredientData[];
-}
-
-export interface IIngredientCardProps {
-	image: string;
-	price: number;
-	name: string;
+export interface IIngredientCardProp extends IIngredientData {
+	count: number;
 	onClick: () => void;
 }

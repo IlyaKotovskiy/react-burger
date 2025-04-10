@@ -26,7 +26,7 @@
 		"cross-env": "^7.0.3",
 		"css-loader": "^6.8.1",
 		"cssnano": "^6.0.1",
-		"cypress": "^14.0.2",
+		"cypress": "14.0.2",
 		"cz-conventional-changelog": "^3.3.0",
 		"eslint": "^8.57.0",
 		"eslint-config-prettier": "^9.1.0",
@@ -49,7 +49,10 @@
 		"mini-css-extract-plugin": "^2.7.6",
 		"postcss-loader": "^7.3.3",
 		"prettier": "^2.8.8",
+		"react-dnd": "^16.0.1",
+		"react-dnd-html5-backend": "^16.0.1",
 		"react-refresh": "^0.14.0",
+		"redux-thunk": "^3.1.0",
 		"sass": "^1.69.7",
 		"sass-loader": "^13.3.3",
 		"style-loader": "^3.3.3",
@@ -62,6 +65,7 @@
 		"typescript": "^5.0.4",
 		"typescript-plugin-css-modules": "^5.0.1",
 		"url-loader": "^4.1.1",
+		"uuidv4": "^6.2.13",
 		"webpack": "5.94.0",
 		"webpack-cli": "^5.0.2",
 		"webpack-dev-server": "^4.15.0"
@@ -81,14 +85,14 @@
 		"generate:component": "node scripts/generateComponent.js"
 	},
 	"dependencies": {
-		"@reduxjs/toolkit": "^2.5.1",
 		"@ya.praktikum/react-developer-burger-ui-components": "^1.14.2",
 		"clsx": "^2.1.0",
 		"core-js": "^3.38.1",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-redux": "^9.2.0",
-		"react-router-dom": "^7.1.5"
+		"react-router-dom": "^7.1.5",
+		"redux": "^5.0.1"
 	},
 	"lint-staged": {
 		"*.{css,scss}": "npm run stylelint:fix",

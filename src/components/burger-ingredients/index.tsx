@@ -1,22 +1,40 @@
 import s from './burger-ingredients.module.css';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { filteredIngredientsByType } from '@utils/filteredIngredients';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IngredientCard } from './ingredient-card';
-import {
-	EIngredientTypes,
-	IBurgerIngredientsProps,
-} from '../../types/burger-ingredients.t';
+import { EIngredientTypes } from '../../types/burger-ingredients.t';
 import { Modal } from '@components/modal';
 import { IIngredientData } from '../../types/data.t';
 import { useModal } from '../../hooks/useModal';
+import { useSelector } from 'react-redux';
+import { RootState } from '../..';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import {
+	getIngredients,
+	setCurrentIngredientAction,
+	setCurrentTabAction,
+} from '@services/actions/ingredients';
 
-export const BurgerIngredients: React.FC<IBurgerIngredientsProps> = ({
-	ingredients,
-}): React.JSX.Element => {
-	const [currentTab, setCurrentTab] = useState<string>(EIngredientTypes.BUNS);
-	const [currentIngredient, setCurrentIngredient] =
-		useState<IIngredientData | null>(null);
+export const BurgerIngredients: React.FC = (): React.JSX.Element => {
+	const dispatch = useAppDispatch();
+	const ingredients = useSelector(
+		(store: RootState) => store.ingredients.allItems
+	);
+	const currentIngredient = useSelector(
+		(store: RootState) => store.ingredients.currentItem
+	);
+	const currentTab = useSelector(
+		(store: RootState) => store.ingredients.currentTab
+	);
+
+	const constructorIngredients = useSelector(
+		(store: RootState) => store.ingredients.constructor.items
+	);
+	const bun = useSelector(
+		(store: RootState) => store.ingredients.constructor.bun
+	);
+
 	const { isOpen, openModal, closeModal } = useModal();
 
 	const buns = useMemo(
@@ -32,15 +50,33 @@ export const BurgerIngredients: React.FC<IBurgerIngredientsProps> = ({
 		[ingredients]
 	);
 
+	const countIngredients = useMemo(() => {
+		const counts: Record<string, number> = {};
+
+		if (bun) {
+			counts[bun._id] = 2;
+		}
+
+		constructorIngredients.forEach((item) => {
+			counts[item._id] = (counts[item._id] || 0) + 1;
+		});
+
+		return counts;
+	}, [constructorIngredients, bun]);
+
 	const handleTabClick = (type: EIngredientTypes): void => {
-		setCurrentTab(type);
+		dispatch(setCurrentTabAction(type));
 		document.getElementById(type)?.scrollIntoView({ behavior: 'smooth' });
 	};
 
 	const handleIngredientClick = (ingredient: IIngredientData) => {
-		setCurrentIngredient(ingredient);
+		dispatch(setCurrentIngredientAction(ingredient));
 		openModal();
 	};
+
+	useEffect(() => {
+		dispatch(getIngredients());
+	}, []);
 
 	return (
 		<div className={s.block}>
@@ -73,6 +109,7 @@ export const BurgerIngredients: React.FC<IBurgerIngredientsProps> = ({
 							<IngredientCard
 								key={elem._id}
 								onClick={() => handleIngredientClick(elem)}
+								count={countIngredients[elem._id || 0]}
 								{...elem}
 							/>
 						))}
@@ -85,6 +122,7 @@ export const BurgerIngredients: React.FC<IBurgerIngredientsProps> = ({
 							<IngredientCard
 								key={elem._id}
 								onClick={() => handleIngredientClick(elem)}
+								count={countIngredients[elem._id || 0]}
 								{...elem}
 							/>
 						))}
@@ -97,6 +135,7 @@ export const BurgerIngredients: React.FC<IBurgerIngredientsProps> = ({
 							<IngredientCard
 								key={elem._id}
 								onClick={() => handleIngredientClick(elem)}
+								count={countIngredients[elem._id || 0]}
 								{...elem}
 							/>
 						))}

@@ -1,95 +1,129 @@
 import s from './burger-constructor.module.css';
-import { data } from '@utils/data';
 import {
 	Button,
 	ConstructorElement,
 	CurrencyIcon,
-	DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useModal } from '../../hooks/useModal';
 import { Modal } from '@components/modal';
 import DoneIcon from '../../app/assets/done.png';
+import { SyntheticEvent, useEffect } from 'react';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { createOrder } from '@services/actions/order';
+import { useSelector } from 'react-redux';
+import { RootState } from '../..';
+import { useDrop } from 'react-dnd';
+import {
+	getTotalConstructorSumAction,
+	moveIngredientAction,
+	removeIngredientAction,
+	setBunAction,
+	setConstructorItemsAction,
+} from '@services/actions/ingredients';
+import { v4 as uuidv4 } from 'uuid';
+import { DraggableConstructorIngredient } from './draggable-constructor-ingredient';
 
 export const BurgerConstructor: React.FC = (): React.JSX.Element => {
+	const dispatch = useAppDispatch();
+	const orderNumber = useSelector(
+		(store: RootState) => store.order.order.number
+	);
+	const ingredients = useSelector(
+		(store: RootState) => store.ingredients.allItems
+	);
+	const { items, bun, totalSum } = useSelector(
+		(store: RootState) => store.ingredients.constructor
+	);
+
 	const { isOpen, openModal, closeModal } = useModal();
 
+	const [, drop] = useDrop({
+		accept: 'ingredient',
+		drop: (item: { _id: string; type: string }) => {
+			const ingredient = ingredients.find((ing) => ing._id === item._id);
+			if (!ingredient) return;
+
+			if (item.type === 'bun') {
+				dispatch(setBunAction(ingredient));
+			} else {
+				dispatch(
+					setConstructorItemsAction({ ...ingredient, uniqueId: uuidv4() })
+				);
+			}
+		},
+	});
+
+	const removeIngredient = (uniqueId: string) => {
+		dispatch(removeIngredientAction(uniqueId));
+	};
+
+	const handleSubmitForm = (e: SyntheticEvent) => {
+		e.preventDefault();
+		const ingredients = [...items, bun];
+
+		dispatch(createOrder([...ingredients]));
+		openModal();
+	};
+
+	const moveItem = (fromIndex: number, toIndex: number) => {
+		dispatch(moveIngredientAction(fromIndex, toIndex));
+	};
+
+	useEffect(() => {
+		dispatch(getTotalConstructorSumAction());
+	}, [bun, items]);
+
 	return (
-		<div className={s.block}>
+		<div ref={drop} className={s.block}>
 			<>
 				<div className={s.burgerConstructor}>
-					<ConstructorElement
-						type='top'
-						isLocked={true}
-						text={'Краторная булка N-200i (верх)'}
-						price={data[0].price}
-						thumbnail={data[0].image}
-					/>
+					{bun && (
+						<ConstructorElement
+							type='top'
+							isLocked={true}
+							text={`${bun.name} (верх)`}
+							price={bun.price}
+							thumbnail={bun.image}
+						/>
+					)}
 					<div className={s.overflowWrap}>
-						<div className={s.dragitem}>
-							<DragIcon type='primary' className={s.dragIcon} />
-							<ConstructorElement
-								text={data[5].name}
-								price={data[5].price}
-								thumbnail={data[5].image}
+						{items.map((item, index) => (
+							<DraggableConstructorIngredient
+								key={item.uniqueId}
+								item={item}
+								index={index}
+								uniqueId={item.uniqueId}
+								onRemove={removeIngredient}
+								moveItem={moveItem}
 							/>
-						</div>
-						<div className={s.dragitem}>
-							<DragIcon type='primary' className={s.dragIcon} />
-							<ConstructorElement
-								text={data[4].name}
-								price={data[4].price}
-								thumbnail={data[4].image}
-							/>
-						</div>
-						<div className={s.dragitem}>
-							<DragIcon type='primary' className={s.dragIcon} />
-							<ConstructorElement
-								text={data[7].name}
-								price={data[7].price}
-								thumbnail={data[7].image}
-							/>
-						</div>
-						<div className={s.dragitem}>
-							<DragIcon type='primary' className={s.dragIcon} />
-							<ConstructorElement
-								text={data[8].name}
-								price={data[8].price}
-								thumbnail={data[8].image}
-							/>
-						</div>
-						<div className={s.dragitem}>
-							<DragIcon type='primary' className={s.dragIcon} />
-							<ConstructorElement
-								text={data[8].name}
-								price={data[8].price}
-								thumbnail={data[8].image}
-							/>
-						</div>
+						))}
 					</div>
-					<ConstructorElement
-						type='bottom'
-						isLocked={true}
-						text={'Краторная булка N-200i (низ)'}
-						price={data[0].price}
-						thumbnail={data[0].image}
-					/>
+					{bun && (
+						<ConstructorElement
+							type='bottom'
+							isLocked={true}
+							text={`${bun.name} (низ)`}
+							price={bun.price}
+							thumbnail={bun.image}
+						/>
+					)}
 				</div>
 				<div className={s.orderWrap}>
 					<span className={s.totalPrice}>
-						610 <CurrencyIcon type='primary' />
+						{totalSum} <CurrencyIcon type='primary' />
 					</span>
 					<Button
 						htmlType='button'
 						type='primary'
 						size='large'
-						onClick={openModal}>
+						onClick={handleSubmitForm}>
 						Оформить заказ
 					</Button>
 				</div>
 				{isOpen && (
 					<Modal onClose={closeModal}>
 						<div className={s.modalWrapper}>
-							<h2 className={s.modalIdTitle}>034536</h2>
+							<h2 className={s.modalIdTitle}>{orderNumber}</h2>
 							<p className={s.modalIdText}>идентификатор заказа</p>
 							<img
 								className={s.modalImage}
