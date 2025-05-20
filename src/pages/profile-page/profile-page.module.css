@@ -1,0 +1,42 @@
+.wrap {
+	display: flex;
+}
+
+.center {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	height: calc(100vh - 96px);
+}
+
+.links {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	max-width: 325px;
+	composes: mr-15 from global;
+}
+
+.link {
+	composes: text text_type_main-medium p-5 from global;
+}
+
+.desc {
+	composes: text text_type_main-default text_color_inactive from global;
+	composes: pl-5 mt-20 from global;
+}
+
+.navActive {
+	composes: link;
+}
+
+.navUnactive {
+	composes: link;
+	composes: text_color_inactive from global;
+}
+
+.input {
+	display: flex;
+	flex-direction: column;
+	composes: mb-6 from global;
+}

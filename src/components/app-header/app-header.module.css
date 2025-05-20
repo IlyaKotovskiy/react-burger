@@ -8,14 +8,10 @@
 	align-items: center;
 }
 
-.navItem {
+.linkItem {
 	display: flex;
 	cursor: pointer;
 	composes: p-5 from global;
-}
-
-.navItem:last-child {
-	margin-left: auto;
 }
 
 .list {
@@ -24,14 +20,14 @@
 }
 
 .logo {
-	margin-left: 112px;
+	margin-left: 100px;
 	cursor: pointer;
 }
 
-.textActive {
+.primary {
 	composes: text text_type_main-default from global;
 }
 
-.textInactive {
+.secondary {
 	composes: text text_type_main-default text_color_inactive from global;
 }
