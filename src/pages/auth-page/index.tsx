@@ -17,6 +17,8 @@ import {
 } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { handleAuth, TAuthState } from '../../api/authUser';
+import { useDispatch } from 'react-redux';
+import { setUserDataAction } from '@services/actions/user';
 
 type TAuthPageProps = {
 	type: 'login' | 'register';
@@ -53,6 +55,7 @@ export const AuthPage: React.FC<TAuthPageProps> = ({
 	const [formData, setFormdata] = useState<TFormData>(initFormData);
 	const navigate = useNavigate();
 	const location = useLocation();
+	const dispatch = useDispatch();
 
 	const handleOnChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
@@ -69,6 +72,7 @@ export const AuthPage: React.FC<TAuthPageProps> = ({
 			const response = await handleAuth(formData as TAuthState, type);
 
 			if (response.success) {
+				dispatch(setUserDataAction(formData));
 				const from = location.state.from.pathname || '/';
 				navigate(from, { replace: true });
 			}

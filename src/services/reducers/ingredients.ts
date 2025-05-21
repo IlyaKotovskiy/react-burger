@@ -28,7 +28,7 @@ const initState: IIngredientState = {
 
 export const ingredientsReducer = (
 	state = initState,
-	action: { type: any; payload?: any }
+	action: { type: string; payload?: any }
 ) => {
 	switch (action.type) {
 		case SET_INGREDIENTS: {

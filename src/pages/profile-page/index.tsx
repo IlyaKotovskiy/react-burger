@@ -6,10 +6,9 @@ import {
 	Input,
 	PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { getUser } from '../../api/getUser';
-import { cookie } from '@utils/cookie';
 import { useDispatch } from 'react-redux';
 import { setUserDataAction } from '@services/actions/user';
+import { checkUserToken } from '@utils/checkUserToken';
 
 type LinkType = {
 	title: string;
@@ -58,16 +57,10 @@ export const ProfilePage: React.FC = () => {
 	};
 
 	useEffect(() => {
-		const checkUserToken = async () => {
-			const token = cookie.get('token');
+		const checkUser = async () => {
+			const userData = await checkUserToken();
 
-			if (!token) {
-				navigate('/', { replace: true });
-				return;
-			}
-
-			try {
-				const userData = await getUser(token);
+			if (userData) {
 				dispatch(
 					setUserDataAction({
 						...userData.user,
@@ -79,15 +72,13 @@ export const ProfilePage: React.FC = () => {
 					login: userData.user.email,
 				}));
 				setIsAuthenticated(true);
-			} catch (error) {
-				console.error('Ошибка при проверке токена:', error);
-				navigate('/', { replace: true });
-			} finally {
 				setIsLoading(false);
+			} else {
+				navigate('/');
 			}
 		};
 
-		checkUserToken();
+		checkUser();
 	}, []);
 
 	if (isLoading) return null;

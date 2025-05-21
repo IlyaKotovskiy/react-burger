@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 type UserDataType = {
-	name: string;
+	name?: string;
 	email: string;
 	password?: string;
 };

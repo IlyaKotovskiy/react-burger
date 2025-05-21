@@ -22,6 +22,7 @@ import {
 } from '@services/actions/ingredients';
 import { v4 as uuidv4 } from 'uuid';
 import { DraggableConstructorIngredient } from './draggable-constructor-ingredient';
+import { checkUserToken } from '@utils/checkUserToken';
 
 export const BurgerConstructor: React.FC = (): React.JSX.Element => {
 	const dispatch = useAppDispatch();
@@ -57,12 +58,16 @@ export const BurgerConstructor: React.FC = (): React.JSX.Element => {
 		dispatch(removeIngredientAction(uniqueId));
 	};
 
-	const handleSubmitForm = (e: SyntheticEvent) => {
+	const handleSubmitForm = async (e: SyntheticEvent) => {
 		e.preventDefault();
-		const ingredients = [...items, bun];
+		const result = await checkUserToken();
 
-		dispatch(createOrder([...ingredients]));
-		openModal();
+		if (result) {
+			const ingredients = [...items, bun];
+
+			dispatch(createOrder([...ingredients]));
+			openModal();
+		}
 	};
 
 	const moveItem = (fromIndex: number, toIndex: number) => {
