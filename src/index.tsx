@@ -6,8 +6,9 @@ import {
 	legacy_createStore as createStore,
 	applyMiddleware,
 	Action,
+	AnyAction,
 } from 'redux';
-import { thunk, ThunkAction } from 'redux-thunk';
+import { thunk, ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { rootReducer } from '@services/reducers';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -16,7 +17,7 @@ const domNode = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(domNode);
 
 export type RootState = ReturnType<typeof rootReducer>;
-export type AppDispatch = typeof store.dispatch;
+export type AppDispatch = ThunkDispatch<RootState, unknown, AnyAction>;
 export type AppThunk<ReturnType = void> = ThunkAction<
 	ReturnType,
 	RootState,

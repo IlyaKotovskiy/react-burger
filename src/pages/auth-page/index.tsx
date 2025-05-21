@@ -16,9 +16,9 @@ import {
 	useState,
 } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { handleAuth, TAuthState } from '../../api/authUser';
-import { useDispatch } from 'react-redux';
-import { setUserDataAction } from '@services/actions/user';
+import { TAuthState } from '../../api/authUser';
+import { authUserAction } from '@services/actions/user';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
 
 type TAuthPageProps = {
 	type: 'login' | 'register';
@@ -55,7 +55,12 @@ export const AuthPage: React.FC<TAuthPageProps> = ({
 	const [formData, setFormdata] = useState<TFormData>(initFormData);
 	const navigate = useNavigate();
 	const location = useLocation();
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
+
+	const handleLoginSuccess = () => {
+		const from = location.state?.from?.pathname || '/';
+		navigate(from, { replace: true });
+	};
 
 	const handleOnChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
@@ -69,12 +74,12 @@ export const AuthPage: React.FC<TAuthPageProps> = ({
 		async (e: FormEvent<HTMLFormElement>) => {
 			e.preventDefault();
 
-			const response = await handleAuth(formData as TAuthState, type);
+			const isSuccess = await dispatch(
+				authUserAction(formData as TAuthState, type)
+			);
 
-			if (response.success) {
-				dispatch(setUserDataAction(formData));
-				const from = location.state.from.pathname || '/';
-				navigate(from, { replace: true });
+			if (isSuccess) {
+				handleLoginSuccess();
 			}
 
 			setFormdata(initFormData);

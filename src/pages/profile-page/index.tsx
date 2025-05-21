@@ -6,9 +6,11 @@ import {
 	Input,
 	PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch } from 'react-redux';
-import { setUserDataAction } from '@services/actions/user';
-import { checkUserToken } from '@utils/checkUserToken';
+import {
+	checkUserTokenAction,
+	setUserDataAction,
+} from '@services/actions/user';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
 
 type LinkType = {
 	title: string;
@@ -40,7 +42,7 @@ export const ProfilePage: React.FC = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const nameInputRef = useRef<HTMLInputElement>(null);
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
@@ -58,18 +60,20 @@ export const ProfilePage: React.FC = () => {
 
 	useEffect(() => {
 		const checkUser = async () => {
-			const userData = await checkUserToken();
+			const result = await dispatch(checkUserTokenAction());
 
-			if (userData) {
+			if (typeof result !== 'boolean') {
+				const user = result.user;
+
 				dispatch(
 					setUserDataAction({
-						...userData.user,
+						...user,
 					})
 				);
 				setFormData((prev) => ({
 					...prev,
-					...userData.user,
-					login: userData.user.email,
+					...user,
+					login: user.email,
 				}));
 				setIsAuthenticated(true);
 				setIsLoading(false);

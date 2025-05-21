@@ -1,4 +1,6 @@
-import { SET_USER_DATA } from '@services/actions/user';
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { SET_USER_DATA, SET_USER_PASSWORD } from '@services/actions/user';
 
 type TUserReducerState = {
 	name: string;
@@ -21,6 +23,12 @@ export const userReducer = (
 			return {
 				...state,
 				...action.payload,
+			};
+		}
+		case SET_USER_PASSWORD: {
+			return {
+				...state,
+				...action.payload!,
 			};
 		}
 		default: {

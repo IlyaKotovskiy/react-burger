@@ -22,10 +22,13 @@ import {
 } from '@services/actions/ingredients';
 import { v4 as uuidv4 } from 'uuid';
 import { DraggableConstructorIngredient } from './draggable-constructor-ingredient';
-import { checkUserToken } from '@utils/checkUserToken';
+import { checkUserTokenAction } from '@services/actions/user';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export const BurgerConstructor: React.FC = (): React.JSX.Element => {
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+	const location = useLocation();
 	const orderNumber = useSelector(
 		(store: RootState) => store.order.order.number
 	);
@@ -60,14 +63,15 @@ export const BurgerConstructor: React.FC = (): React.JSX.Element => {
 
 	const handleSubmitForm = async (e: SyntheticEvent) => {
 		e.preventDefault();
-		const result = await checkUserToken();
+		const isAuthenticated = await dispatch(checkUserTokenAction());
 
-		if (result) {
-			const ingredients = [...items, bun];
-
-			dispatch(createOrder([...ingredients]));
-			openModal();
+		if (!isAuthenticated) {
+			navigate('/login', { state: { from: location } });
 		}
+
+		const ingredients = [...items, bun];
+		dispatch(createOrder([...ingredients]));
+		openModal();
 	};
 
 	const moveItem = (fromIndex: number, toIndex: number) => {

@@ -14,11 +14,11 @@ import {
 	useState,
 } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
 import {
-	forgotPassword,
-	resetPassword,
-	TPasswordState,
-} from '../../api/resetPassword';
+	forgotUserPasswordAction,
+	resetUserPasswordAction,
+} from '@services/actions/user';
 
 type TForgotPasswordPageProps = {
 	type: 'forgot' | 'reset';
@@ -44,6 +44,7 @@ export const ForgotPasswordPage: React.FC<TForgotPasswordPageProps> = ({
 	);
 
 	const navigate = useNavigate();
+	const dispatch = useAppDispatch();
 	const [formData, setFormData] = useState<TFormData>(initFormData);
 
 	const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -60,9 +61,9 @@ export const ForgotPasswordPage: React.FC<TForgotPasswordPageProps> = ({
 			e.preventDefault();
 
 			if (type === 'forgot') {
-				await forgotPassword(formData as TPasswordState);
+				await dispatch(forgotUserPasswordAction(formData));
 			} else if (type === 'reset') {
-				await resetPassword(formData as TPasswordState);
+				await dispatch(resetUserPasswordAction(formData));
 			}
 
 			navigate('/reset-password');

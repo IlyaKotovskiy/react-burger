@@ -1,7 +1,7 @@
 import { request } from '@utils/checkResponse';
 import { BASE_URL } from '../app';
 
-type UserPromiseType = {
+export type UserPromiseType = {
 	success: boolean;
 	user: {
 		name: string;
