@@ -10,11 +10,16 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useCallback } from 'react';
 
+type TIsActiveLinkCallback = (
+	path: string,
+	exact?: boolean
+) => 'primary' | 'secondary';
+
 export const AppHeader: React.FC = (): React.JSX.Element => {
 	const location = useLocation();
 
-	const isActiveLink = useCallback(
-		(path: string, exact = false) => {
+	const isActiveLink = useCallback<TIsActiveLinkCallback>(
+		(path, exact = false) => {
 			const isActive = exact
 				? location.pathname === path
 				: location.pathname.startsWith(path);

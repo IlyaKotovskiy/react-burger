@@ -19,7 +19,7 @@ export const BurgerIngredients: React.FC = (): React.JSX.Element => {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const location = useLocation();
-	const ingredients = useSelector(
+	const ingredients: Array<IIngredientData> = useSelector(
 		(store: RootState) => store.ingredients.allItems
 	);
 	const currentTab = useSelector(
@@ -33,20 +33,20 @@ export const BurgerIngredients: React.FC = (): React.JSX.Element => {
 		(store: RootState) => store.ingredients.constructor.bun
 	);
 
-	const buns = useMemo(
+	const buns = useMemo<Array<IIngredientData>>(
 		() => filteredIngredientsByType(ingredients)('bun'),
 		[ingredients]
 	);
-	const sauces = useMemo(
+	const sauces = useMemo<Array<IIngredientData>>(
 		() => filteredIngredientsByType(ingredients)('sauce'),
 		[ingredients]
 	);
-	const main = useMemo(
+	const main = useMemo<Array<IIngredientData>>(
 		() => filteredIngredientsByType(ingredients)('main'),
 		[ingredients]
 	);
 
-	const countIngredients = useMemo(() => {
+	const countIngredients = useMemo<Record<string, number>>(() => {
 		const counts: Record<string, number> = {};
 
 		if (bun) {

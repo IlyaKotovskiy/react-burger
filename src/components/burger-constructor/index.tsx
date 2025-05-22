@@ -57,11 +57,11 @@ export const BurgerConstructor: React.FC = (): React.JSX.Element => {
 		},
 	});
 
-	const removeIngredient = (uniqueId: string) => {
+	const removeIngredient = (uniqueId: string): void => {
 		dispatch(removeIngredientAction(uniqueId));
 	};
 
-	const handleSubmitForm = async (e: SyntheticEvent) => {
+	const handleSubmitForm = async (e: SyntheticEvent): Promise<void> => {
 		e.preventDefault();
 		const isAuthenticated = await dispatch(checkUserTokenAction());
 

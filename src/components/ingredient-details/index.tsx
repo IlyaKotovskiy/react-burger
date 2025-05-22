@@ -1,14 +1,16 @@
 import s from './ingredient-details.module.css';
 import { getIngredient } from '@services/actions/ingredients';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../..';
+import { useSelector } from 'react-redux';
+import { RootState } from '../..';
 import { useParams } from 'react-router-dom';
+import { IIngredientData } from '../../types/data.t';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
 
 export const IngredientDetails: React.FC = (): React.JSX.Element => {
 	const { id } = useParams<{ id: string }>();
-	const dispatch = useDispatch<AppDispatch>();
-	const ingredient = useSelector(
+	const dispatch = useAppDispatch();
+	const ingredient: IIngredientData = useSelector(
 		(store: RootState) => store.ingredients.currentItem
 	);
 

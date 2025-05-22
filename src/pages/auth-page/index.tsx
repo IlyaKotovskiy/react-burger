@@ -57,7 +57,7 @@ export const AuthPage: React.FC<TAuthPageProps> = ({
 	const location = useLocation();
 	const dispatch = useAppDispatch();
 
-	const handleLoginSuccess = () => {
+	const handleLoginSuccess = (): void => {
 		const from = location.state?.from?.pathname || '/';
 		navigate(from, { replace: true });
 	};
