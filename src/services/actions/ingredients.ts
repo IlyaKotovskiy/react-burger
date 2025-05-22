@@ -1,9 +1,12 @@
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { IConstructorIngredient } from '../../types/store/ingredients.t';
 import { AppThunk } from '../..';
 import { fetchIngredients } from '../../api/fetchIngredients';
 import { IIngredientData } from '../../types/data.t';
 
 export const SET_INGREDIENTS = 'SET_INGREDIENTS';
+export const SET_INGREDIENT = 'SET_INGREDIENT';
 export const MOVE_INGREDIENT = 'MOVE_INGREDIENT';
 export const REMOVE_INGREDIENT = 'REMOVE_INGREDIENT';
 export const SET_CONSTRUCTOR_ITEMS = 'SET_CONSTRUCTOR_ITEMS';
@@ -61,3 +64,12 @@ export const getIngredients = (): AppThunk => (dispatch) => {
 		.then((data) => dispatch(setIngredientsAction(data)))
 		.catch((error) => console.error('Error:', error));
 };
+
+export const getIngredient =
+	(id: string): AppThunk =>
+	(dispatch) => {
+		fetchIngredients()
+			.then((data) => data.find((elem) => elem._id === id))
+			.then((ingredeint) => dispatch(setCurrentIngredientAction(ingredeint!)))
+			.catch((error) => console.error('Error:', error));
+	};

@@ -4,9 +4,7 @@ import { filteredIngredientsByType } from '@utils/filteredIngredients';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IngredientCard } from './ingredient-card';
 import { EIngredientTypes } from '../../types/burger-ingredients.t';
-import { Modal } from '@components/modal';
 import { IIngredientData } from '../../types/data.t';
-import { useModal } from '../../hooks/useModal';
 import { useSelector } from 'react-redux';
 import { RootState } from '../..';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
@@ -15,14 +13,14 @@ import {
 	setCurrentIngredientAction,
 	setCurrentTabAction,
 } from '@services/actions/ingredients';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const BurgerIngredients: React.FC = (): React.JSX.Element => {
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+	const location = useLocation();
 	const ingredients = useSelector(
 		(store: RootState) => store.ingredients.allItems
-	);
-	const currentIngredient = useSelector(
-		(store: RootState) => store.ingredients.currentItem
 	);
 	const currentTab = useSelector(
 		(store: RootState) => store.ingredients.currentTab
@@ -34,8 +32,6 @@ export const BurgerIngredients: React.FC = (): React.JSX.Element => {
 	const bun = useSelector(
 		(store: RootState) => store.ingredients.constructor.bun
 	);
-
-	const { isOpen, openModal, closeModal } = useModal();
 
 	const buns = useMemo(
 		() => filteredIngredientsByType(ingredients)('bun'),
@@ -69,9 +65,9 @@ export const BurgerIngredients: React.FC = (): React.JSX.Element => {
 		document.getElementById(type)?.scrollIntoView({ behavior: 'smooth' });
 	};
 
-	const handleIngredientClick = (ingredient: IIngredientData) => {
+	const handleIngredientClick = (ingredient: IIngredientData, id: string) => {
 		dispatch(setCurrentIngredientAction(ingredient));
-		openModal();
+		navigate(`/ingredients/${id}`, { state: { background: location } });
 	};
 
 	useEffect(() => {
@@ -108,7 +104,7 @@ export const BurgerIngredients: React.FC = (): React.JSX.Element => {
 						{buns.map((elem) => (
 							<IngredientCard
 								key={elem._id}
-								onClick={() => handleIngredientClick(elem)}
+								onClick={() => handleIngredientClick(elem, elem._id)}
 								count={countIngredients[elem._id || 0]}
 								{...elem}
 							/>
@@ -121,7 +117,7 @@ export const BurgerIngredients: React.FC = (): React.JSX.Element => {
 						{sauces.map((elem) => (
 							<IngredientCard
 								key={elem._id}
-								onClick={() => handleIngredientClick(elem)}
+								onClick={() => handleIngredientClick(elem, elem._id)}
 								count={countIngredients[elem._id || 0]}
 								{...elem}
 							/>
@@ -134,7 +130,7 @@ export const BurgerIngredients: React.FC = (): React.JSX.Element => {
 						{main.map((elem) => (
 							<IngredientCard
 								key={elem._id}
-								onClick={() => handleIngredientClick(elem)}
+								onClick={() => handleIngredientClick(elem, elem._id)}
 								count={countIngredients[elem._id || 0]}
 								{...elem}
 							/>
@@ -142,42 +138,6 @@ export const BurgerIngredients: React.FC = (): React.JSX.Element => {
 					</div>
 				</li>
 			</ul>
-			{isOpen && currentIngredient && (
-				<Modal title={'Детали ингредиента'} onClose={closeModal}>
-					<div>
-						<img
-							src={currentIngredient.image}
-							alt={currentIngredient.name}
-							className={s.modalImage}
-						/>
-						<h3 className={s.modalIngredientTitle}>{currentIngredient.name}</h3>
-						<ul className={s.modalIngredientListInfo}>
-							<li className={s.modalIngredientListItem}>
-								<p>Калории,ккал</p>
-								<span className={s.modalDigits}>
-									{currentIngredient.calories}
-								</span>
-							</li>
-							<li className={s.modalIngredientListItem}>
-								<p>Белки, г</p>
-								<span className={s.modalDigits}>
-									{currentIngredient.proteins}
-								</span>
-							</li>
-							<li className={s.modalIngredientListItem}>
-								<p>Жиры, г</p>
-								<span className={s.modalDigits}>{currentIngredient.fat}</span>
-							</li>
-							<li className={s.modalIngredientListItem}>
-								<p>Углеводы, г</p>
-								<span className={s.modalDigits}>
-									{currentIngredient.carbohydrates}
-								</span>
-							</li>
-						</ul>
-					</div>
-				</Modal>
-			)}
 		</div>
 	);
 };

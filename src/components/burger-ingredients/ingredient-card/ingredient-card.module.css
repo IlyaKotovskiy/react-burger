@@ -17,13 +17,13 @@
 	position: absolute;
 	top: -8px;
 	right: -2px;
-	width: 32px;
-	height: 32px;
-	border-radius: 50%;
-	background-color: #4C4CFF;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	width: 32px;
+	height: 32px;
+	background-color: #4c4cff;
+	border-radius: 50%;
 	composes: text text_type_digits-default from global;
 }
 
