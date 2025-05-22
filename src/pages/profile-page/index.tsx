@@ -23,8 +23,8 @@ type FormDataType = {
 	password: string;
 };
 
-export const ProfilePage: React.FC = () => {
-	const links: LinkType[] = useMemo(
+export const ProfilePage: React.FC = (): React.JSX.Element | null => {
+	const links = useMemo<LinkType[]>(
 		() => [
 			{ title: 'Профиль', link: '/profile' },
 			{ title: 'История заказов', link: '/profile/orders' },
@@ -44,7 +44,7 @@ export const ProfilePage: React.FC = () => {
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 
-	const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleOnChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		const { name, value } = e.target;
 
 		setFormData((prev) => ({
@@ -53,7 +53,7 @@ export const ProfilePage: React.FC = () => {
 		}));
 	};
 
-	const onIconClick = () => {
+	const onIconClick = (): void => {
 		setTimeout(() => nameInputRef.current?.focus(), 0);
 		setDisabledNameInput(false);
 	};

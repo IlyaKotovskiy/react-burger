@@ -6,11 +6,12 @@ import { IngredientDetails } from '@components/ingredient-details';
 import { getIngredient } from '@services/actions/ingredients';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { IIngredientData } from '../../types/data.t';
 
 export const IngredientDetailsPage: React.FC = (): React.JSX.Element => {
 	const { id } = useParams<{ id: string }>();
 	const dispatch = useDispatch<AppDispatch>();
-	const ingredient = useSelector(
+	const ingredient: IIngredientData = useSelector(
 		(store: RootState) => store.ingredients.currentItem
 	);
 
@@ -22,7 +23,7 @@ export const IngredientDetailsPage: React.FC = (): React.JSX.Element => {
 
 	return (
 		<div>
-			<IngredientDetails {...ingredient} />
+			<IngredientDetails />
 		</div>
 	);
 };
