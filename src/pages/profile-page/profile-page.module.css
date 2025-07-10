@@ -34,9 +34,3 @@
 	composes: link;
 	composes: text_color_inactive from global;
 }
-
-.input {
-	display: flex;
-	flex-direction: column;
-	composes: mb-6 from global;
-}

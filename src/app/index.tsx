@@ -6,16 +6,20 @@ import { ForgotPasswordPage } from '@pages/forgot-password-page';
 import { MianPage } from '@pages/main-page';
 import { ProfilePage } from '@pages/profile-page';
 import { ProtectedRouteElement } from '@utils/ProtectedRouteElement';
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { IngredientDetailsPage } from '@pages/ingredient-details-page';
 import { Modal } from '@components/modal';
 import { IngredientDetails } from '@components/ingredient-details';
+import { OrderFeed } from '@pages/order-feed';
+import { OrderInfo } from '@pages/order-info';
+import { OrderInfoContent } from '@components/order-info-content';
+import { ProfileForm } from '@components/profile-form';
+import { ProfileOrders } from '@components/profile-orders';
 
 export const BASE_URL = 'https://norma.nomoreparties.space/api';
 
 export const App = () => {
 	const location = useLocation();
-	const navigate = useNavigate();
 	const background = location.state && (location.state as any).background;
 
 	return (
@@ -23,6 +27,12 @@ export const App = () => {
 			<AppHeader />
 			<Routes location={background || location}>
 				<Route path='/' element={<MianPage />} />
+
+				<Route path='/feed' element={<OrderFeed />} />
+
+				<Route path='/feed/:id' element={<OrderInfo />} />
+				<Route path='/profile/orders/:id' element={<OrderInfo />} />
+
 				<Route path='/ingredients/:id' element={<IngredientDetailsPage />} />
 				<Route
 					path='/login'
@@ -89,16 +99,34 @@ export const App = () => {
 						<ProtectedRouteElement>
 							<ProfilePage />
 						</ProtectedRouteElement>
-					}
-				/>
+					}>
+					<Route index element={<ProfileForm />} />
+					<Route path='orders' element={<ProfileOrders />} />
+				</Route>
 			</Routes>
 			{background && (
 				<Routes>
 					<Route
 						path='/ingredients/:id'
 						element={
-							<Modal title='Детали ингредиента' onClose={() => navigate(-1)}>
+							<Modal title='Детали ингредиента'>
 								<IngredientDetails />
+							</Modal>
+						}
+					/>
+					<Route
+						path='/feed/:id'
+						element={
+							<Modal>
+								<OrderInfoContent />
+							</Modal>
+						}
+					/>
+					<Route
+						path='/profile/orders/:id'
+						element={
+							<Modal>
+								<OrderInfoContent />
 							</Modal>
 						}
 					/>

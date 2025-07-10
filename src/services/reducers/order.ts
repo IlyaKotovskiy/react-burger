@@ -1,8 +1,18 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CREATE_ORDER } from '@services/actions/order';
 
-const initState = {
+import { TOrderActions } from '../actions/order';
+import { CREATE_ORDER } from '../constants';
+
+type TOrderState = {
+	name: string;
+	order: {
+		number: null | number;
+	};
+	success: boolean;
+};
+
+const initState: TOrderState = {
 	name: '',
 	order: {
 		number: null,
@@ -12,8 +22,8 @@ const initState = {
 
 export const orderReducer = (
 	state = initState,
-	action: { type: any; payload?: any }
-) => {
+	action: TOrderActions
+): TOrderState => {
 	switch (action.type) {
 		case CREATE_ORDER: {
 			return { ...action.payload };

@@ -41,9 +41,9 @@ export const AppHeader: React.FC = (): React.JSX.Element => {
 							</Link>
 						</li>
 						<li>
-							<Link to={'/orders'} className={s.linkItem}>
-								<ListIcon type={isActiveLink('/orders')} className='mr-2' />
-								<p className={s[isActiveLink('/orders')]}>Лента заказов</p>
+							<Link to={'/feed'} className={s.linkItem}>
+								<ListIcon type={isActiveLink('/feed')} className='mr-2' />
+								<p className={s[isActiveLink('/feed')]}>Лента заказов</p>
 							</Link>
 						</li>
 					</ul>

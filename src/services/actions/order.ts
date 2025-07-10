@@ -1,16 +1,22 @@
-import { AppThunk } from '../..';
+import { CREATE_ORDER, IWithPayloadAction } from '../constants';
+import { AppDispatch, AppThunk } from '../..';
 import { fetchOrder, IOrderState } from '../../api/fetchOrder';
 
-export const CREATE_ORDER = 'CREATE_ORDER';
+export interface ICreateOrderAction extends IWithPayloadAction<IOrderState> {
+	readonly type: typeof CREATE_ORDER;
+}
 
-export const createOrderAction = (payload: IOrderState) => ({
+export type TOrderActions = ICreateOrderAction;
+
+export const createOrderAction = (
+	payload: IOrderState
+): ICreateOrderAction => ({
 	type: CREATE_ORDER,
 	payload,
 });
 
-export const createOrder =
-	(ingredientIds: string[]): AppThunk =>
-	(dispatch) => {
+export const createOrder: AppThunk =
+	(ingredientIds: string[]) => (dispatch: AppDispatch) => {
 		fetchOrder(ingredientIds)
 			.then((data) => dispatch(createOrderAction(data)))
 			.catch((error) => console.error('Error:', error));

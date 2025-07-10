@@ -1,16 +1,11 @@
 import s from './profile-page.module.css';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
-import {
-	EmailInput,
-	Input,
-	PasswordInput,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { useDispatch } from '../../services/hooks';
 import {
 	checkUserTokenAction,
 	setUserDataAction,
-} from '@services/actions/user';
-import { useAppDispatch } from '../../hooks/useAppDispatch';
+} from '../../services/actions/user';
 
 type LinkType = {
 	title: string;
@@ -37,26 +32,10 @@ export const ProfilePage: React.FC = (): React.JSX.Element | null => {
 		login: '',
 		password: '',
 	});
-	const [disabledNameInput, setDisabledNameInput] = useState(true);
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
-	const nameInputRef = useRef<HTMLInputElement>(null);
 	const navigate = useNavigate();
-	const dispatch = useAppDispatch();
-
-	const handleOnChange = (e: ChangeEvent<HTMLInputElement>): void => {
-		const { name, value } = e.target;
-
-		setFormData((prev) => ({
-			...prev,
-			[name]: value,
-		}));
-	};
-
-	const onIconClick = (): void => {
-		setTimeout(() => nameInputRef.current?.focus(), 0);
-		setDisabledNameInput(false);
-	};
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		const checkUser = async () => {
@@ -65,16 +44,12 @@ export const ProfilePage: React.FC = (): React.JSX.Element | null => {
 			if (typeof result !== 'boolean') {
 				const user = result.user;
 
-				dispatch(
-					setUserDataAction({
-						...user,
-					})
-				);
-				setFormData((prev) => ({
-					...prev,
-					...user,
+				dispatch(setUserDataAction({ ...user }));
+				setFormData({
+					name: user.name,
 					login: user.email,
-				}));
+					password: '',
+				});
 				setIsAuthenticated(true);
 				setIsLoading(false);
 			} else {
@@ -86,7 +61,6 @@ export const ProfilePage: React.FC = (): React.JSX.Element | null => {
 	}, []);
 
 	if (isLoading) return null;
-
 	if (!isAuthenticated) return null;
 
 	return (
@@ -99,6 +73,7 @@ export const ProfilePage: React.FC = (): React.JSX.Element | null => {
 								<NavLink
 									key={link.link}
 									to={link.link}
+									end
 									className={({ isActive }) =>
 										isActive ? s.navActive : s.navUnactive
 									}>
@@ -109,36 +84,13 @@ export const ProfilePage: React.FC = (): React.JSX.Element | null => {
 								В этом разделе вы можете изменить свои персональные данные
 							</p>
 						</div>
-						<form>
-							<Input
-								extraClass={s.input}
-								onChange={handleOnChange}
-								value={formData.name}
-								name='name'
-								placeholder='Имя'
-								icon='EditIcon'
-								disabled={disabledNameInput}
-								onBlur={() => setDisabledNameInput(true)}
-								onIconClick={onIconClick}
-								ref={nameInputRef}
+						<div className={s.content}>
+							<Outlet
+								context={{
+									formData,
+								}}
 							/>
-							<EmailInput
-								extraClass={s.input}
-								onChange={handleOnChange}
-								value={formData.login}
-								name='login'
-								placeholder='Логин'
-								isIcon
-							/>
-							<PasswordInput
-								extraClass={s.input}
-								onChange={handleOnChange}
-								value={formData.password}
-								name='password'
-								placeholder='Пароль'
-								icon='EditIcon'
-							/>
-						</form>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -17,8 +17,8 @@ import {
 } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { TAuthState } from '../../api/authUser';
-import { authUserAction } from '@services/actions/user';
-import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { authUserAction } from '../../services/actions/user';
+import { useDispatch } from '../../services/hooks';
 
 type TAuthPageProps = {
 	type: 'login' | 'register';
@@ -55,7 +55,7 @@ export const AuthPage: React.FC<TAuthPageProps> = ({
 	const [formData, setFormdata] = useState<TFormData>(initFormData);
 	const navigate = useNavigate();
 	const location = useLocation();
-	const dispatch = useAppDispatch();
+	const dispatch = useDispatch();
 
 	const handleLoginSuccess = (): void => {
 		const from = location.state?.from?.pathname || '/';

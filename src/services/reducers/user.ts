@@ -1,14 +1,16 @@
 /* eslint-disable eslint-comments/disable-enable-pair */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { SET_USER_DATA, SET_USER_PASSWORD } from '@services/actions/user';
 
-type TUserReducerState = {
+import { TUserActions } from '../actions/user';
+import { SET_USER_DATA, SET_USER_PASSWORD } from '../constants';
+
+type TUserState = {
 	name: string;
 	email: string;
 	password: string;
 };
 
-const initState: TUserReducerState = {
+const initState: TUserState = {
 	name: '',
 	email: '',
 	password: '',
@@ -16,8 +18,8 @@ const initState: TUserReducerState = {
 
 export const userReducer = (
 	state = initState,
-	action: { type: string; payload?: TUserReducerState }
-) => {
+	action: TUserActions
+): TUserState => {
 	switch (action.type) {
 		case SET_USER_DATA: {
 			return {

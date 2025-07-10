@@ -14,11 +14,11 @@ import {
 	useState,
 } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks/useAppDispatch';
 import {
 	forgotUserPasswordAction,
 	resetUserPasswordAction,
-} from '@services/actions/user';
+} from '../../services/actions/user';
+import { useDispatch } from '../../services/hooks';
 
 type TForgotPasswordPageProps = {
 	type: 'forgot' | 'reset';
@@ -44,7 +44,7 @@ export const ForgotPasswordPage: React.FC<TForgotPasswordPageProps> = ({
 	);
 
 	const navigate = useNavigate();
-	const dispatch = useAppDispatch();
+	const dispatch = useDispatch();
 	const [formData, setFormData] = useState<TFormData>(initFormData);
 
 	const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {

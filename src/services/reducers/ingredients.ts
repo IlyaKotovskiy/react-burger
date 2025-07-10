@@ -9,9 +9,10 @@ import {
 	SET_CURRENT_INGREDIENT,
 	SET_CURRENT_TAB,
 	SET_INGREDIENTS,
-} from '@services/actions/ingredients';
+} from '../constants';
 import { EIngredientTypes } from '../../types/burger-ingredients.t';
 import { IIngredientState } from '../../types/store/ingredients.t';
+import { TIngredientsActions } from '../actions/ingredients';
 
 const initState: IIngredientState = {
 	allItems: [],
@@ -28,8 +29,8 @@ const initState: IIngredientState = {
 
 export const ingredientsReducer = (
 	state = initState,
-	action: { type: string; payload?: any }
-) => {
+	action: TIngredientsActions
+): IIngredientState => {
 	switch (action.type) {
 		case SET_INGREDIENTS: {
 			return { ...state, allItems: [...action.payload] };
