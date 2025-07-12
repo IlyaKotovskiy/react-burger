@@ -14,7 +14,6 @@
 .numberAndTimestampFeed {
 	composes: mb-6 from global;
 	composes: text text_type_digits-default from global;
-
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -55,11 +54,11 @@
 }
 
 .totlaPrice {
-	composes: text text_type_digits-default from global;
-	margin-left: auto;
 	display: flex;
 	align-items: center;
 	gap: 4px;
+	margin-left: auto;
+	composes: text text_type_digits-default from global;
 }
 
 /* feed component end */

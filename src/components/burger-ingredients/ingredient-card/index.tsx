@@ -19,7 +19,12 @@ export const IngredientCard: React.FC<IIngredientCardProp> = (
 	const opacity = isDragging ? 0.5 : 1;
 
 	return (
-		<button className={s.card} onClick={onClick} ref={drag} style={{ opacity }}>
+		<button
+			data-testid={`ingredient-${type}`}
+			className={s.card}
+			onClick={onClick}
+			ref={drag}
+			style={{ opacity }}>
 			{count && <span className={s.counter}>{count}</span>}
 			<img className='mb-1 pl-4 pr-4' src={image} alt={name} />
 			<span className={s.digits}>

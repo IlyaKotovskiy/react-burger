@@ -82,12 +82,13 @@ export const BurgerConstructor: React.FC = (): React.JSX.Element => {
 	}, [bun, items]);
 
 	return (
-		<div ref={drop} className={s.block}>
+		<div ref={drop} className={s.block} data-testid='constructor-drop-area'>
 			<>
 				<div className={s.burgerConstructor}>
 					{bun && (
 						<ConstructorElement
 							type='top'
+							data-testid='constructor-bun-top'
 							isLocked={true}
 							text={`${bun.name} (верх)`}
 							price={bun.price}
@@ -109,6 +110,7 @@ export const BurgerConstructor: React.FC = (): React.JSX.Element => {
 					{bun && (
 						<ConstructorElement
 							type='bottom'
+							data-testid='constructor-bun-bottom'
 							isLocked={true}
 							text={`${bun.name} (низ)`}
 							price={bun.price}
@@ -124,14 +126,17 @@ export const BurgerConstructor: React.FC = (): React.JSX.Element => {
 						htmlType='button'
 						type='primary'
 						size='large'
+						data-testid='order-button'
 						onClick={handleSubmitForm}>
 						Оформить заказ
 					</Button>
 				</div>
 				{isOpen && (
-					<Modal>
+					<Modal dataTestId='order-modal'>
 						<div className={s.modalWrapper}>
-							<h2 className={s.modalIdTitle}>{orderNumber}</h2>
+							<h2 className={s.modalIdTitle} data-testid='order-number'>
+								{orderNumber}
+							</h2>
 							<p className={s.modalIdText}>идентификатор заказа</p>
 							<img
 								className={s.modalImage}

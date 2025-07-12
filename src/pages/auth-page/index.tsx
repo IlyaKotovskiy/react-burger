@@ -124,18 +124,21 @@ export const AuthPage: React.FC<TAuthPageProps> = ({
 						value={formData.email}
 						name='email'
 						isIcon={false}
+						data-testid='email-input'
 					/>
 					<PasswordInput
 						extraClass={s.input}
 						name='password'
 						value={formData.password}
 						onChange={handleOnChange}
+						data-testid='password-input'
 					/>
 					<Button
 						htmlType='submit'
 						type='primary'
 						size='large'
-						extraClass={s.submitBtn}>
+						extraClass={s.submitBtn}
+						data-testid='login-button'>
 						{btnText}
 					</Button>
 				</form>
