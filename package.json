@@ -90,7 +90,7 @@
 		"cypress": "cypress open",
 		"generate:component": "node scripts/generateComponent.js",
 		"predeploy": "npm run build",
-		"deploy": "gh-pages -d build"
+		"deploy": "gh-pages -d dist"
 	},
 	"dependencies": {
 		"@ya.praktikum/react-developer-burger-ui-components": "^1.14.2",
