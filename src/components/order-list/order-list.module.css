@@ -1,0 +1,65 @@
+.orders {
+	max-height: calc(100vh - 196px);
+	overflow: auto;
+}
+
+/* feed component start */
+
+.feedContainer {
+	composes: mb-4 p-6 from global;
+	background-color: var(--interface-modal-bg);
+	border-radius: 16px;
+}
+
+.numberAndTimestampFeed {
+	composes: mb-6 from global;
+	composes: text text_type_digits-default from global;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.timestamp {
+	composes: text text_type_main-default text_color_inactive from global;
+}
+
+.titleFeed {
+	composes: mb-6 from global;
+	composes: text text_type_main-medium from global;
+}
+
+.ingredientsFeed {
+	display: flex;
+	align-items: center;
+}
+
+.ingredientWrapper {
+	position: relative;
+	width: 128px;
+}
+
+.ingredientWrapper:not(:first-child) {
+	margin-left: -90px;
+}
+
+.counterOverlay {
+	composes: text text_type_digits-default from global;
+	position: absolute;
+	top: 25%;
+	left: 70%;
+}
+
+.ingredientImage {
+	width: 100%;
+}
+
+.totlaPrice {
+	composes: text text_type_digits-default from global;
+	margin-left: auto;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+/* feed component end */

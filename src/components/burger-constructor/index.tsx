@@ -8,9 +8,7 @@ import { useModal } from '../../hooks/useModal';
 import { Modal } from '@components/modal';
 import DoneIcon from '../../app/assets/done.png';
 import { SyntheticEvent, useEffect } from 'react';
-import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { createOrder } from '@services/actions/order';
-import { useSelector } from 'react-redux';
+import { createOrder } from '../../services/actions/order';
 import { RootState } from '../..';
 import { useDrop } from 'react-dnd';
 import {
@@ -19,14 +17,15 @@ import {
 	removeIngredientAction,
 	setBunAction,
 	setConstructorItemsAction,
-} from '@services/actions/ingredients';
+} from '../../services/actions/ingredients';
 import { v4 as uuidv4 } from 'uuid';
 import { DraggableConstructorIngredient } from './draggable-constructor-ingredient';
-import { checkUserTokenAction } from '@services/actions/user';
+import { checkUserTokenAction } from '../../services/actions/user';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from '../../services/hooks';
 
 export const BurgerConstructor: React.FC = (): React.JSX.Element => {
-	const dispatch = useAppDispatch();
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const location = useLocation();
 	const orderNumber = useSelector(
@@ -39,7 +38,7 @@ export const BurgerConstructor: React.FC = (): React.JSX.Element => {
 		(store: RootState) => store.ingredients.constructor
 	);
 
-	const { isOpen, openModal, closeModal } = useModal();
+	const { isOpen, openModal } = useModal();
 
 	const [, drop] = useDrop({
 		accept: 'ingredient',
@@ -57,11 +56,11 @@ export const BurgerConstructor: React.FC = (): React.JSX.Element => {
 		},
 	});
 
-	const removeIngredient = (uniqueId: string) => {
+	const removeIngredient = (uniqueId: string): void => {
 		dispatch(removeIngredientAction(uniqueId));
 	};
 
-	const handleSubmitForm = async (e: SyntheticEvent) => {
+	const handleSubmitForm = async (e: SyntheticEvent): Promise<void> => {
 		e.preventDefault();
 		const isAuthenticated = await dispatch(checkUserTokenAction());
 
@@ -130,7 +129,7 @@ export const BurgerConstructor: React.FC = (): React.JSX.Element => {
 					</Button>
 				</div>
 				{isOpen && (
-					<Modal onClose={closeModal}>
+					<Modal>
 						<div className={s.modalWrapper}>
 							<h2 className={s.modalIdTitle}>{orderNumber}</h2>
 							<p className={s.modalIdText}>идентификатор заказа</p>

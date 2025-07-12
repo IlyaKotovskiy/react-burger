@@ -1,5 +1,6 @@
 import { request } from '@utils/checkResponse';
 import { BASE_URL } from '../app';
+import { cookie } from '@utils/cookie';
 
 export interface IOrderState {
 	name: string;
@@ -16,6 +17,7 @@ export const fetchOrder = async (
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
+			Authorization: 'Bearer ' + cookie.get('token'),
 		},
 		body: JSON.stringify({
 			ingredients: ingredientsIds,

@@ -1,7 +1,9 @@
 import { IIngredientData, TIngredient } from '../types/data.t';
 
-export const filteredIngredientsByType = (data: IIngredientData[]) => {
-	return (type: TIngredient): IIngredientData[] => {
-		return data.filter((i: IIngredientData) => i.type === type);
+export const filteredIngredientsByType = <T extends Array<IIngredientData>>(
+	data: T
+) => {
+	return (type: TIngredient): T => {
+		return data.filter((i) => i.type === type) as T;
 	};
 };

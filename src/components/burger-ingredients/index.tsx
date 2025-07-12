@@ -5,48 +5,42 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IngredientCard } from './ingredient-card';
 import { EIngredientTypes } from '../../types/burger-ingredients.t';
 import { IIngredientData } from '../../types/data.t';
-import { useSelector } from 'react-redux';
-import { RootState } from '../..';
-import { useAppDispatch } from '../../hooks/useAppDispatch';
 import {
 	getIngredients,
 	setCurrentIngredientAction,
 	setCurrentTabAction,
-} from '@services/actions/ingredients';
+} from '../../services/actions/ingredients';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from '../../services/hooks';
 
 export const BurgerIngredients: React.FC = (): React.JSX.Element => {
-	const dispatch = useAppDispatch();
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const location = useLocation();
-	const ingredients = useSelector(
-		(store: RootState) => store.ingredients.allItems
+	const ingredients: Array<IIngredientData> = useSelector(
+		(store) => store.ingredients.allItems
 	);
-	const currentTab = useSelector(
-		(store: RootState) => store.ingredients.currentTab
-	);
+	const currentTab = useSelector((store) => store.ingredients.currentTab);
 
 	const constructorIngredients = useSelector(
-		(store: RootState) => store.ingredients.constructor.items
+		(store) => store.ingredients.constructor.items
 	);
-	const bun = useSelector(
-		(store: RootState) => store.ingredients.constructor.bun
-	);
+	const bun = useSelector((store) => store.ingredients.constructor.bun);
 
-	const buns = useMemo(
+	const buns = useMemo<Array<IIngredientData>>(
 		() => filteredIngredientsByType(ingredients)('bun'),
 		[ingredients]
 	);
-	const sauces = useMemo(
+	const sauces = useMemo<Array<IIngredientData>>(
 		() => filteredIngredientsByType(ingredients)('sauce'),
 		[ingredients]
 	);
-	const main = useMemo(
+	const main = useMemo<Array<IIngredientData>>(
 		() => filteredIngredientsByType(ingredients)('main'),
 		[ingredients]
 	);
 
-	const countIngredients = useMemo(() => {
+	const countIngredients = useMemo<Record<string, number>>(() => {
 		const counts: Record<string, number> = {};
 
 		if (bun) {

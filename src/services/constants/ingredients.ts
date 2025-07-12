@@ -1,0 +1,9 @@
+export const SET_INGREDIENTS = 'SET_INGREDIENTS' as const;
+export const SET_INGREDIENT = 'SET_INGREDIENT' as const;
+export const MOVE_INGREDIENT = 'MOVE_INGREDIENT' as const;
+export const REMOVE_INGREDIENT = 'REMOVE_INGREDIENT' as const;
+export const SET_CONSTRUCTOR_ITEMS = 'SET_CONSTRUCTOR_ITEMS' as const;
+export const GET_TOTAL_CONSTRUCTOR_SUM = 'GET_TOTAL_CONSTRUCTOR_SUM' as const;
+export const SET_CURRENT_INGREDIENT = 'SET_CURRENT_INGREDIENT' as const;
+export const SET_CURRENT_TAB = 'SET_CURRENT_TAB' as const;
+export const SET_BUN = 'SET_BUN' as const;
