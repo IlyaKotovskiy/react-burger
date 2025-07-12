@@ -10,7 +10,7 @@ import {
 import { thunk, ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { rootReducer } from './services/reducers';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom';
 import { TOrderActions } from './services/actions/order';
 import { TIngredientsActions } from './services/actions/ingredients';
 import { TUserActions } from './services/actions/user';
@@ -39,7 +39,7 @@ export type AppDispatch = ThunkDispatch<
 
 root.render(
 	<StrictMode>
-		<Router basename='/react-burger'>
+		<Router>
 			<Provider store={store}>
 				<App />
 			</Provider>
