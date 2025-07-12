@@ -39,7 +39,7 @@ export type AppDispatch = ThunkDispatch<
 
 root.render(
 	<StrictMode>
-		<Router basename='/react-burger'>
+		<Router basename='react-burger'>
 			<Provider store={store}>
 				<App />
 			</Provider>
