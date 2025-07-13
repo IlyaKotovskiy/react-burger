@@ -1,12 +1,11 @@
+import { cyypressConfig } from "../config";
+
 describe('Полный сценарий работы с конструктором (API-запросы)', () => {
-	const testUser = {
-		email: 'ilundrikstv@gmail.com',
-		password: 'Matilda026',
-	};
+	const { email, password } = cyypressConfig.testUser;
 
 	beforeEach(() => {
 		cy.clearCookies();
-		cy.visit('http://localhost:8080/');
+		cy.visit(cyypressConfig.testUrl);
 		cy.get('[data-testid="ingredient-bun"]', { timeout: 5000 }).should('exist');
 	});
 
@@ -25,9 +24,10 @@ describe('Полный сценарий работы с конструкторо
 		cy.location('pathname').should('eq', '/login');
 
 		// 3. Авторизуемся
-		cy.get('[data-testid="email-input"]').type(testUser.email);
-		cy.get('[data-testid="password-input"]').type(testUser.password);
+		cy.get('[data-testid="email-input"]').type(email);
+		cy.get('[data-testid="password-input"]').type(password);
 		cy.get('[data-testid="login-button"]').click();
+		cy.wait(2000);
 
 		// 4. Оформляем заказ
 		cy.get('[data-testid="order-button"]').click();

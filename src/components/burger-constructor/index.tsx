@@ -66,6 +66,7 @@ export const BurgerConstructor: React.FC = (): React.JSX.Element => {
 
 		if (!isAuthenticated) {
 			navigate('/login', { state: { from: location } });
+			return;
 		}
 
 		const ingredients = [...items, bun];
