@@ -1,8 +1,8 @@
 .conatiner {
 	display: flex;
 	flex-direction: column;
-	max-width: 630px;
 	width: 100%;
+	max-width: 630px;
 	height: max-content;
 }
 
@@ -25,39 +25,39 @@
 }
 
 .status.done {
-	color: #00CCCC;
+	color: #00cccc;
 }
 
 .listTitle {
 	composes: text text_type_main-medium from global;
 	composes: mb-6 from global;
-};
+}
 
 .list {
 	composes: mb-6 from global;
-};
+}
 
 .ingredient {
 	composes: mb-4 from global;
 	display: flex;
-	align-items: center
-};
+	align-items: center;
+}
 
 .ingredientImage {
 	composes: mr-3 from global;
 	width: 128px;
-};
+}
 
 .ingredientTitle {
 	composes: text text_type_main-default from global;
 	composes: mr-4 from global;
-};
+}
 
 .countsPrice {
 	composes: text text_type_digits-default from global;
 	display: flex;
 	margin-left: auto;
-};
+}
 
 .footer {
 	display: flex;
@@ -67,11 +67,11 @@
 .timestamp {
 	composes: text text_type_main-default from global;
 	color: var(--text-inactive-color);
-};
+}
 
 .totalPrice {
 	composes: text text_type_digits-default from global;
 	display: flex;
 	align-items: center;
 	gap: 4px;
-};
+}

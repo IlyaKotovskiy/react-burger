@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 export const Modal: React.FC<IModalProps> = ({
 	title,
 	children,
+	dataTestId,
 }): React.JSX.Element | null => {
 	const modalRoot = document.body;
 	const navigate = useNavigate();
@@ -27,7 +28,8 @@ export const Modal: React.FC<IModalProps> = ({
 				animate={{ opacity: 1, backdropFilter: 'blur(4px)' }}
 				exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
 				onClick={onClose}
-				className={s.popup}>
+				className={s.popup}
+				data-testid={dataTestId}>
 				<motion.div
 					className={s.modal}
 					initial={{ opacity: 0, translateY: 35, scale: 0.9 }}

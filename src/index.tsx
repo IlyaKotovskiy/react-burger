@@ -39,7 +39,8 @@ export type AppDispatch = ThunkDispatch<
 
 root.render(
 	<StrictMode>
-		<Router basename='/'>
+		<Router
+			basename={process.env.NODE_ENV === 'production' ? 'react-burger' : ''}>
 			<Provider store={store}>
 				<App />
 			</Provider>

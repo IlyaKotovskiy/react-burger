@@ -7,4 +7,5 @@ export interface IUseModal {
 export interface IModalProps {
 	title?: string;
 	children: React.ReactNode;
+	dataTestId?: string;
 }
